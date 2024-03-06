@@ -79,19 +79,20 @@ func NewPlayer() *Player {
 		log.Fatal(err)
 	}
 
-	idleGrid := ganim8.NewGrid(FrameW, FrameH, 640, 192, 0, 0, 0)
-	p.anims[Player_Idle] = ganim8.New(p.images[Player_Idle], idleGrid.Frames("1-10", "1-2", "1-4", 3), time.Millisecond*60)
+	idleGrid := ganim8.NewGrid(FrameW, FrameH, 352, 32, 0, 0, 0)
+	// frames referencing >>> (column, grid)
+	p.anims[Player_Idle] = ganim8.New(p.images[Player_Idle], idleGrid.Frames("1-11", 1), time.Millisecond*60)
 
-	runGrid := ganim8.NewGrid(FrameW, FrameH, 640, 64, 0, 0, 0)
-	p.anims[Player_Run] = ganim8.New(p.images[Player_Run], runGrid.Frames("1-10", 1), time.Millisecond*60)
+	runGrid := ganim8.NewGrid(FrameW, FrameH, 384, 32, 0, 0, 0)
+	p.anims[Player_Run] = ganim8.New(p.images[Player_Run], runGrid.Frames("1-12", 1), time.Millisecond*60)
 
-	jumpGrid := ganim8.NewGrid(FrameW, FrameH, 832, 64, 0, 0, 0)
-	p.anims[Player_Jump] = ganim8.New(p.images[Player_Jump], jumpGrid.Frames("1-13", 1), time.Millisecond*60)
+	jumpGrid := ganim8.NewGrid(FrameW, FrameH, 32, 32, 0, 0, 0)
+	p.anims[Player_Jump] = ganim8.New(p.images[Player_Jump], jumpGrid.Frames(1, 1), time.Millisecond*60)
 
-	climbGrid := ganim8.NewGrid(FrameW, FrameH, 640, 128, 0, 0, 0)
-	p.anims[Player_Climb] = ganim8.New(p.images[Player_Climb], climbGrid.Frames("1-10", 1, "1-2", 2), time.Millisecond*60)
+	climbGrid := ganim8.NewGrid(FrameW, FrameH, 160, 32, 0, 0, 0)
+	p.anims[Player_Climb] = ganim8.New(p.images[Player_Climb], climbGrid.Frames("1-5", 1), time.Millisecond*60)
 
-	p.state = Player_Run
+	p.state = Player_Idle
 	p.grounded = true
 	p.curr_anim = p.anims[p.state]
 
@@ -155,7 +156,7 @@ func (p *Player) Draw(screen *ebiten.Image) {
 	px := p.x
 	if p.dir == Dir_Left {
 		sx = -1.
-		px += 64 // (64 / 2)
+		px += FrameW // (64 / 2)
 	} else if p.dir == Dir_Right {
 		sx = 1.
 	}
